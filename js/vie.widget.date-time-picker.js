@@ -6,6 +6,13 @@ function Rule(type, date1, label, reference, date2) {
   this.date2 = date2;
 }
 
+function hideCard(button) {
+  $(button).parent().model.isClicked=false;
+  $(button).parent().hide();
+}
+
+
+
 (function($, undefined) {
   $.widget("view.vieDatePicker", {
     _create: function () {
@@ -28,7 +35,6 @@ function Rule(type, date1, label, reference, date2) {
     initialize: function (opt) {
       this.vie = opt.vie;
     },
-  
   render: function () {
       function fixSchemaId(str) {
         // Converts for example:
@@ -55,24 +61,40 @@ function Rule(type, date1, label, reference, date2) {
       }
       
       //added to remove '@en' message at the end of the entity name
-      function removeInNameLanguageSign (str) {
-        str = str.slice (0, -3);
+      function removeLangSign (str) {
+        for (var i=0; i < str.length; i++) {
+          if (str[i]== "@") {
+            str= str.slice(0, i);
+          }
+        }
+        //str = str.slice (0, -3);
         return str;
       }
-      
-     //added to make elements annotated with <date></date> draggable and droppable
-      function makeDraggableDroppable () {
-        $('date').each(function(){$(this).draggable();})
-        $('date').each(function(){$(this).droppable();})
-      }
-      
+
       // var type = getRealType(this.model); 
       var type = this.model.get ('@type');
       
       var attributes = type.attributes.list();
       var schemaName = this.model.get ("schema:name");
       //$(this.el).html("<h2>" + this.model.get("schema:name"));
-      $(this.el).html("<h2>" + removeInNameLanguageSign (schemaName));
+      $(this.el).html("<h2>" + removeLangSign (schemaName));
+
+      //new: added button for entity card
+      var button = $("<button type='button' class='close-btn'></button>");
+      
+      button.click(
+        (function (model) {
+            return function () {
+              model.isClicked = false;
+              $(this).parent().hide();
+            }
+        })(this.model) 
+      );
+      
+      $(this.el).prepend(button);
+
+      //end new
+   
       var html_list = $("<ul class='entity-attributes'> </ul>");
       for (var i = 0; i < attributes.length; i++) {
         var attribute = attributes[i];
@@ -85,15 +107,32 @@ function Rule(type, date1, label, reference, date2) {
                 var date = Kalendae.moment(value);
                 input.attr("value", date.format("MM-DD-YYYY"));
               }
+              //new
+               var validRanges= (function (model, id) {
+                  return function () {
+                     var rules = getDateRange(model, "schema:" + id, allRules);
+                     var lower = rules[0] ? rules[0] : "any";
+                     var upper = rules[1] ? rules[1] : "any";
+                     var fromDate= "From: " + lower;
+                     fromDate= removeLangSign(fromDate);
+                     var toDate= "To: " + upper;
+                     toDate=removeLangSign(toDate);
+                     var message= new Array(fromDate, toDate);
+                     return (message);
+                   }
+                 })(this.model, id);
+              //end new
               function installKalendar(model, input, id) {
-                new Kalendae.Input(input[0], {format: "MM-DD-YYYY", 
-                                                          subscribe: {
-                                                          'change': function () {
-                                                             var value = this.getSelected();
-                                                             model.set("schema:" + id, value);
-                                                          }
-                                              }                                             
-                });
+                new Kalendae.Input(input[0], {
+                                                format: "MM-DD-YYYY", 
+                                                subscribe: {
+                                                  'change': function () {
+                                                     var value = this.getSelected();
+                                                     model.set("schema:" + id, value);
+                                                  }
+                                                },
+                                                message: validRanges()
+                                              });
               }
               installKalendar(this.model, input, id);
               // Install click handler.
@@ -104,12 +143,14 @@ function Rule(type, date1, label, reference, date2) {
                      var rules = getDateRange(model, "schema:" + id, allRules);
                      var lower = rules[0] ? rules[0] : "any";
                      var upper = rules[1] ? rules[1] : "any";
-                     console.log("valid ranges: [" + lower + " ... " + upper + "]");
+                     //console.log("valid ranges: [" + lower + " ... " + upper + "]");
                    }
                  })(this.model, id) 
+              
               );
             } else {
-              input.attr("value", value);
+              //input.attr("value", value);
+              input.attr("value", removeLangSign(value));
             }
             var list_item = $("<li>" + id + ": </li>");
             list_item.append(input);
@@ -117,7 +158,6 @@ function Rule(type, date1, label, reference, date2) {
         }
       }
       $(this.el).append(html_list);
-      makeDraggableDroppable ();
       return this;
     }
   });
@@ -198,8 +238,6 @@ function Rule(type, date1, label, reference, date2) {
       }
       return result;
     }
-    //declare entities?
-    //var entities = vie.entities;
     for (var i = 0; i < entities.length; i++) {
        var entity = entities.models[i];
        var entity_rules = findRulesForEntity(entity, rules);
@@ -247,7 +285,6 @@ function Rule(type, date1, label, reference, date2) {
   }
 
   function getDateRange(entity, attribute, rules) {
-   //declare var entities?
     var entities = vie.entities;
     var graphLess = new Graph(entities, rules, "<=");
     var graphGreater = new Graph(entities, rules, ">=");

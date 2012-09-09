@@ -188,6 +188,11 @@
 
 /** Days outside of the month view (before the first day of the month, after the last day of the month) **/
 .kalendae .k-days span.k-out-of-month {color:#ddd;}
+.message {
+
+	text-align: left;
+	color: blue;
+}
 
 
 

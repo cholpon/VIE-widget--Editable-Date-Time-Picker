@@ -107,6 +107,17 @@ var Kalendae = function (targetElement, options) {
 		}
 		
 		//title bar
+		//new
+		$message0 = util.make('div', {'class':classes.title}, $cal);
+		$message0.innerHTML = "Recommended date range";
+		$message0.setAttribute('class','message');
+		$message1 = util.make('div', {'class':classes.title}, $cal);
+		$message1.innerHTML = options.message[0];
+		$message1.setAttribute('class','message');
+		$message2 = util.make('div', {'class':classes.title}, $cal);
+		$message2.innerHTML = options.message[1];
+		$message2.setAttribute('class','message');
+		//end new
 		$title = util.make('div', {'class':classes.title}, $cal);
 		util.make('a', {'class':classes.previousYear}, $title);	//previous button
 		util.make('a', {'class':classes.previousMonth}, $title);	//previous button

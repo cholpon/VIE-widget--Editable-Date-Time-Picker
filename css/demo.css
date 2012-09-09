@@ -18,12 +18,12 @@ h1,h2,h3,h4 {
 
 #content {
     width: 500px;
-    float: left;
+    float:left;
     font-size:12pt;
     height: 600px;
-	  background: white;
-	  padding: 1em 1em 1em 1em;
-	  display: block;
+	background: white;
+	padding: 1em 1em 1em 1em;
+	display: block;
     -webkit-border-radius: 0.8em;
     -moz-border-radius: 0.8em;
     
@@ -97,5 +97,20 @@ a {
 
 }
 .clickable{
-color:green;
+color:blue;
+}
+.close-btn  {
+float: right;
+top:-8px;
+right:-8px;
+width:16px;
+height:16px;
+border:2px solid #ccc;
+color:#999;
+line-height:17px;
+text-align:center;
+font-size:13px;
+border-radius:10px;
+box-shadow:0 1px 3px rgba(0,0,0,0.75);
+cursor:pointer;
 }
