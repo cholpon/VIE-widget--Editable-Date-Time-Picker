@@ -1,9 +1,10 @@
 html {
-   height: 100%; 
+    height: 100%; 
+    background:  #eeeeee;
 }
 
 body {
- font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 72.0%;
     background: #eeeeee;
     text-align: justify;
@@ -20,10 +21,11 @@ h1,h2,h3,h4 {
     width: 500px;
     float:left;
     font-size:12pt;
+    text-align: justify;
     height: 600px;
-	background: white;
-	padding: 1em 1em 1em 1em;
-	display: block;
+    background: white;
+    padding: 1em 1em 1em 1em;
+    display: block;
     -webkit-border-radius: 0.8em;
     -moz-border-radius: 0.8em;
     
@@ -37,10 +39,17 @@ h1,h2,h3,h4 {
     text-align: center;
     font-size: 16pt;
 }
-
+.article {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4em;
+    color: #333333;
+    text-align: justify;
+}
 .entity-card {
     float: left;
-    font-size:8pt;
+    font-size:10px;
+    color: #333333;
     height: auto;
     width: 400px;
     background: white;
@@ -49,68 +58,35 @@ h1,h2,h3,h4 {
     display: inline;
     -webkit-border-radius: 0.8em;
     -moz-border-radius: 0.8em;
-    border: 1px solid gray;
-}
-
-#widgets h2 {
-    width: 300px;
-    font-size: 70%;
-    height: auto;
-	  background: white;
-    margin-left: 640px;
-	  padding: 1em 1em 1em 1em;
-	  display: block;
-    -webkit-border-radius: 0.8em;
-    -moz-border-radius: 0.8em;
-  
+    
     -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 5px 6px 0;
     -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 5px 6px 0;
     -o-box-shadow: rgba(0, 0, 0, 0.2) 0 5px 6px 0;
     box-shadow: rgba(0, 0, 0, 0.2) 0 5px 6px 0;
 }
 
-#widgets div {
-    margin: 1em 0;
-}
-date.ui-draggable {
-color: green;
-}
-
-#sample_img {
-	width: 300px;
-}
-
-a {
-    text-decoration: none;
-    color: #1b1eb4;
-}
-
-<-- [about] {
-	//text-shadow: 0 0 0.1em #87F;
-//	color: navy;
-//	cursor: move;
-//	z-index: 9999;
-// } -->
-
-.hover{
-	text-shadow: 1px 1px 4px #87F;
-
-}
 .clickable{
-color:blue;
+    text-shadow: 0 0 0.2em #87F, 0 0 0.2em #87F;
+    cursor: pointer;
+}
+.clickable:hover {
+    color: #33CC33;
 }
 .close-btn  {
-float: right;
-top:-8px;
-right:-8px;
-width:16px;
-height:16px;
-border:2px solid #ccc;
-color:#999;
-line-height:17px;
-text-align:center;
-font-size:13px;
-border-radius:10px;
-box-shadow:0 1px 3px rgba(0,0,0,0.75);
-cursor:pointer;
+    float: right;
+    top:-8px;
+    right:-8px;
+    width:16px;
+    height:16px;
+    border:2px solid #ccc;
+    color:#999;
+    line-height:17px;
+    text-align:center;
+    font-size:13px;
+    border-radius:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.75);
+    cursor:pointer;
+    background: url(../libs/closing_sign.jpg);
+    background-size:12px 12px;
+    background-repeat:no-repeat;
 }

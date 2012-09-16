@@ -5,9 +5,9 @@
         <title>Date annotation</title>
 	
 	  
-		<!-- jQuery  -->
-		<script type="text/javascript" src="libs/jquery-1.6.1.js"></script>
-		<script type="text/javascript" src="libs/jquery-ui-1.8.16.js"></script>
+		    <!-- jQuery  -->
+		    <script type="text/javascript" src="libs/jquery-1.6.1.js"></script>
+		    <script type="text/javascript" src="libs/jquery-ui-1.8.16.js"></script>
 
         <!-- scripts required for VIE   -->
         <script type="text/javascript" src="libs/underscore-1.3.1.js"></script>   
@@ -39,52 +39,58 @@
     	 <script type="text/javascript" src="js/rules/TVSeason.js"></script>
     	 <script type="text/javascript" src="js/rules/TVSeries.js"></script>
     	 <script type="text/javascript" src="js/rules/webPage.js"></script>
-         <link rel="stylesheet" type="text/css" href="css/demo.css" charset="utf-8"/>
+       <link rel="stylesheet" type="text/css" href="css/demo.css" charset="utf-8"/>
 
-         <script type="text/javascript" src="js/demo.js"></script>
+       <script type="text/javascript" src="js/demo.js"></script>
 
        <!-- Backbone templates -->
-    <script type="text/template" id="movie-template">
+       <script type="text/template" id="movie-template">
             <h1> <%= name %>  </h1>
             <p> <%= datePublished %> </p>
             all for now.
-    </script>
+       </script>
 
-    </head>
+  </head>
     <body>
         <div id="content">
             <div class="article">
-<div style="float:right; margin:2em"><img src="avatar.jpg"> </img> </div>
-<div typeof="schema:Movie">
-  <h1 class="title">Avatar</h1>
-  <span property="schema:name">Avatar</span> is a <span property="schema:genre">science fiction</span> film directed by 
-  <span rel="schema:director"> 
-    <span typeof="schema:Person" about="http://my-namespace/James_Cameron">
-       <span property="schema:name">James Cameron</span>
-       (born <span property="schema:birthDate" content="1954-08-16">August 16, 1954</span>).
-       Cameron appeared at 
-          <span rel="schema:performerIn">
-             <span typeof="schema:Event" about="http://my-namespace/San_Diego_Comic-Con">
-                <span property="schema:name">San Diego Comic-Con</span>
-                (which was held from 
-                   <span property="schema:startDate" content="2009-07-23">July 23th, 2009</span> to 
-                   <span property="schema:endDate" content="2009-07-26">July 26th, 2009</span>)
-             </span>
-          </span>
-        to launch a promotion campaign for the film. 
-    </span>
-  </span>
-  On <span property="schema:datePublished" content="2009-12-10">December 10, 2009</span> the film premiered in London.
-  The film's production company was 
-  <span rel="schema:productionCompany">
-    <span typeof="schema:Organization" about="http://my-namespace/Lightstorm_Entertainment"> <span property="schema:name">Lightstorm Entertainment</span>.
-    </span>
-  </span>   
-</div> 
-</div>
-</div>
-<div>
-    <div id="entity-cards"></div>
-</div>
-   </body>
+                <div typeof="schema:Movie">
+                <h1 class="title"> VIE Widget - DateTimePicker</h1><br>
+                <p>
+                  <span property="schema:name">Avatar</span> is a <span property="schema:genre">science fiction
+                  </span> film directed by 
+                  <span rel="schema:director"> 
+                  <span typeof="schema:Person" about="http://my-namespace/James_Cameron">
+                  <span property="schema:name">James Cameron</span>, a Canadian film director and film producer. Cameron was born in Kapuskasing, Ontario on
+                  <span property="schema:birthDate" content="1954-08-16">August 16, 1954</span> and is famous for his previous works, such as "The Terminator"(1984), "Aliens"(1986), "True Lies"(1994) and "Titanic"(1997).
+                </p>
+                
+                <p>
+                  To launch a promotion campaign for Avatar, Cameron appeared at 
+                  <span rel="schema:performerIn">
+                  <span typeof="schema:Event" about="http://my-namespace/San_Diego_Comic-Con">
+                  <span property="schema:name">San Diego Comic-Con</span>
+                  , a four-day convention that was held from 
+                  <span property="schema:startDate" content="2009-07-23">July 23th, 2009</span> to 
+                  <span property="schema:endDate" content="2009-07-27">July 27th, 2009</span>
+                  </span>
+                  </span>.
+                  </span>
+                  </span>
+                  On <span property="schema:datePublished" content="2009-12-10">December 10, 2009</span> the film premiered in London. It received positive critical reviews worldwide and quickly became the highest-grossing film of all time.
+                  The film's production company was 
+                  <span rel="schema:productionCompany">
+                  <span typeof="schema:Organization" about="http://my-namespace/Lightstorm_Entertainment"> <span property="schema:name">Lightstorm Entertainment</span>.
+                  </span>
+                  </span>
+                </p>
+                </div>  
+           </div>
+           <div style="text-align:center;margin-top:20px;" class="tellmemore">
+             <h3>Tutorial</h3>
+                Click <a style="color:#31e;" href="explain.html">here</a> for the tutorial.
+           </div> 
+        </div>
+        <div id="entity-cards"></div>
+    </body>
 </html>

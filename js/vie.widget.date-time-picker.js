@@ -124,7 +124,7 @@ function hideCard(button) {
               //end new
               function installKalendar(model, input, id) {
                 new Kalendae.Input(input[0], {
-                                                format: "MM-DD-YYYY", 
+                                                format: "MM-DD-YYYY",
                                                 subscribe: {
                                                   'change': function () {
                                                      var value = this.getSelected();
@@ -149,9 +149,16 @@ function hideCard(button) {
               
               );
             } else {
-              //input.attr("value", value);
-              input.attr("value", removeLangSign(value));
-            }
+              //new
+                if (!contains(value,"@")) {
+                  value = value.getSubject();
+                  input.attr("value", value);
+                  } else {
+                  input.attr("value", removeLangSign(value));
+                  }
+                  //input.attr("value", value);
+                  //input.attr("value", removeLangSign(value));
+                }
             var list_item = $("<li>" + id + ": </li>");
             list_item.append(input);
             html_list.append(list_item);
