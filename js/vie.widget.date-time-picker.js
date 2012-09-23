@@ -6,36 +6,46 @@ function Rule(type, date1, label, reference, date2) {
   this.date2 = date2;
 }
 
-function hideCard(button) {
-  $(button).parent().model.isClicked=false;
-  $(button).parent().hide();
-}
-
-
-
 (function($, undefined) {
+  // Date Picker Widget starts.
   $.widget("view.vieDatePicker", {
     _create: function () {
-      // initialize all 
-              
+      var widget = this;
+      var vie = widget.options.vie;
+      $(widget.element).find('[property="schema:name"]').addClass("clickable");
+      $(widget.element).find('[property="schema:name"]').click(function() {
+          var clickedName = ($(this).text());  
+          var entities = widget.options.vie.entities;
+          var currentEntity = _.find(entities.models, function(entity) {
+            var name = entity.get("schema:name");
+            return (normalizedSchemaName(name) == clickedName);
+          });
+          if (!currentEntity.isClicked) {
+            currentEntity.isClicked = true;
+            var element = $("<div class='entity-card'> </div>");
+            widget.options.container.append(element);
+            var view = new SchemaView({model: currentEntity, vie: vie, el: element});
+            view.render();
+          }
+      });
     },
     
     _init:   function () {
-      // do work
-      
     },
-   
+
     options: {
-      myVIE: undefined
-      
+      vie: undefined,
+      container: undefined
     }
   });
-  
-  SchemaView = Backbone.View.extend( {
+  // Date Picker Widget ends.
+
+  var SchemaView = Backbone.View.extend( {
     initialize: function (opt) {
       this.vie = opt.vie;
     },
-  render: function () {
+
+    render: function () {
       function fixSchemaId(str) {
         // Converts for example:
         // "<http://schema.orgactor>" to "actor".
@@ -60,26 +70,13 @@ function hideCard(button) {
         return isDateAttribute(id) || (typeof value != "undefined");
       }
       
-      //added to remove '@en' message at the end of the entity name
-      function removeLangSign (str) {
-        for (var i=0; i < str.length; i++) {
-          if (str[i]== "@") {
-            str= str.slice(0, i);
-          }
-        }
-        //str = str.slice (0, -3);
-        return str;
-      }
-
       // var type = getRealType(this.model); 
       var type = this.model.get ('@type');
       
       var attributes = type.attributes.list();
       var schemaName = this.model.get ("schema:name");
-      //$(this.el).html("<h2>" + this.model.get("schema:name"));
-      $(this.el).html("<h2>" + removeLangSign (schemaName));
+      $(this.el).html("<h2>" + normalizedSchemaName(schemaName));
 
-      //new: added button for entity card
       var button = $("<button type='button' class='close-btn'></button>");
       
       button.click(
@@ -92,8 +89,6 @@ function hideCard(button) {
       );
       
       $(this.el).prepend(button);
-
-      //end new
    
       var html_list = $("<ul class='entity-attributes'> </ul>");
       for (var i = 0; i < attributes.length; i++) {
@@ -101,67 +96,63 @@ function hideCard(button) {
         var id = fixSchemaId(attribute.id);
         var value = this.model.get("schema:" + id);
         if (id != "name" && worthShowing(id, value)) {
-            var input = $("<input type=text></input>");
-            if (isDateAttribute(id)) {
-              if (typeof value != "undefined") {
-                var date = Kalendae.moment(value);
-                input.attr("value", date.format("MM-DD-YYYY"));
-              }
-              //new
-               var validRanges= (function (model, id) {
-                  return function () {
-                     var rules = getDateRange(model, "schema:" + id, allRules);
-                     var lower = rules[0] ? rules[0] : "any";
-                     var upper = rules[1] ? rules[1] : "any";
-                     var fromDate= "From: " + lower;
-                     fromDate= removeLangSign(fromDate);
-                     var toDate= "To: " + upper;
-                     toDate=removeLangSign(toDate);
-                     var message= new Array(fromDate, toDate);
-                     return (message);
-                   }
-                 })(this.model, id);
-              //end new
-              function installKalendar(model, input, id) {
-                new Kalendae.Input(input[0], {
-                                                format: "MM-DD-YYYY",
-                                                subscribe: {
-                                                  'change': function () {
-                                                     var value = this.getSelected();
-                                                     model.set("schema:" + id, value);
-                                                  }
-                                                },
-                                                message: validRanges()
-                                              });
-              }
-              installKalendar(this.model, input, id);
-              // Install click handler.
-              // Pass model (which is entity) and id (attribute name).
-              input.click(
-                 (function (model, id) {
-                   return function () {
-                     var rules = getDateRange(model, "schema:" + id, allRules);
-                     var lower = rules[0] ? rules[0] : "any";
-                     var upper = rules[1] ? rules[1] : "any";
-                     //console.log("valid ranges: [" + lower + " ... " + upper + "]");
-                   }
-                 })(this.model, id) 
-              
-              );
+          var input = $("<input type=text></input>");
+          if (isDateAttribute(id)) {
+            if (typeof value != "undefined") {
+              var date = Kalendae.moment(value);
+              input.attr("value", date.format("MM-DD-YYYY"));
+            }
+            var validRanges= (function (model, id) {
+                return function () {
+                   var rules = getDateRange(model, "schema:" + id, allRules);
+                   var lower = rules[0] ? rules[0] : "any";
+                   var upper = rules[1] ? rules[1] : "any";
+                   var fromDate = "From: " + lower;
+                   fromDate = normalizedSchemaName(fromDate);
+                   var toDate = "To: " + upper;
+                   toDate = normalizedSchemaName(toDate);
+                   var message = new Array(fromDate, toDate);
+                   return (message);
+                 }
+            })(this.model, id);
+            function installKalendar(model, input, id) {
+              new Kalendae.Input(input[0], {
+                                              format: "MM-DD-YYYY",
+                                              subscribe: {
+                                                'change': function () {
+                                                   var value = this.getSelected();
+                                                   model.set("schema:" + id, value);
+                                                }
+                                              },
+                                              message: validRanges()
+                                            });
+            }
+            installKalendar(this.model, input, id);
+            // Install click handler.
+            // Pass model (which is entity) and id (attribute name).
+            input.click(
+               (function (model, id) {
+                 return function () {
+                   var rules = getDateRange(model, "schema:" + id, allRules);
+                   var lower = rules[0] ? rules[0] : "any";
+                   var upper = rules[1] ? rules[1] : "any";
+                   //console.log("valid ranges: [" + lower + " ... " + upper + "]");
+                 }
+               })(this.model, id) 
+            
+            );
+          } else {
+            //new
+            if (!contains(value,"@")) {
+              value = value.getSubject();
+              input.attr("value", value);
             } else {
-              //new
-                if (!contains(value,"@")) {
-                  value = value.getSubject();
-                  input.attr("value", value);
-                  } else {
-                  input.attr("value", removeLangSign(value));
-                  }
-                  //input.attr("value", value);
-                  //input.attr("value", removeLangSign(value));
-                }
-            var list_item = $("<li>" + id + ": </li>");
-            list_item.append(input);
-            html_list.append(list_item);
+              input.attr("value", normalizedSchemaName(value));
+            }
+          }
+          var list_item = $("<li>" + id + ": </li>");
+          list_item.append(input);
+          html_list.append(list_item);
         }
       }
       $(this.el).append(html_list);
@@ -300,4 +291,12 @@ function hideCard(button) {
     var reachableGreater = graphGreater.findReachable(graphGreater.findVertex(vertexId));
     return [findMin(reachableGreater), findMax(reachableLess)];
   }
+
+  function normalizedSchemaName(name) {
+    name = name.replace(/"/g, '');
+    name = name.replace(/@.*$/, '');
+    return name;
+  }
+
+
 })(jQuery);
