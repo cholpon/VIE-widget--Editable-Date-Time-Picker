@@ -1,19 +1,3 @@
-var allRules = ([]).concat(rulesForCreativeWork(),
-               rulesForEducationalOrganization(),
-               rulesForEvent(),
-               rulesForJobPosting(),
-               rulesForMediaObject(),
-               rulesForMovie(),
-               rulesForMusicPlaylist(),
-               rulesForOffer(),
-               rulesForOrganization(),
-               rulesForPerson(),
-               rulesForSoftwareApplication(),
-               rulesForTVEpisode(),
-               rulesForTVSeason(), 
-               rulesForTVSeries(),
-               rulesForWebPage());
-
 
 $ (function ()  {
     var vie = window.vie = new VIE({
@@ -32,6 +16,7 @@ $ (function ()  {
               .fail(function (e) {
                   console.warn("failed to load rdfa entities" + e);
               });
+            
           $('#content').vieDatePicker({vie: vie, container: $("#entity-cards")}); 
         },
         error: function (e) {

@@ -1,3 +1,8 @@
+// VIE Widgets - Vienna IKS Editable Widgets
+// (c) 2012 Cholpon Degenbaeva
+// VIE Widgets may be freely distributed under the MIT license.
+// (see LICENSE)
+
 function Rule(type, date1, label, reference, date2) {
   this.type = type;
   this.date1 = date1;
@@ -6,12 +11,12 @@ function Rule(type, date1, label, reference, date2) {
   this.date2 = date2;
 }
 
+
 (function($, undefined) {
   // Date Picker Widget starts.
   $.widget("view.vieDatePicker", {
     _create: function () {
       var widget = this;
-      var vie = widget.options.vie;
       $(widget.element).find('[property="schema:name"]').addClass("clickable");
       $(widget.element).find('[property="schema:name"]').click(function() {
           var clickedName = ($(this).text());  
@@ -46,6 +51,23 @@ function Rule(type, date1, label, reference, date2) {
     },
 
     render: function () {
+        var allRules = ([]).concat(rulesForCreativeWork(),
+               rulesForEducationalOrganization(),
+               rulesForEvent(),
+               rulesForJobPosting(),
+               rulesForMediaObject(),
+               rulesForMovie(),
+               rulesForMusicPlaylist(),
+               rulesForOffer(),
+               rulesForOrganization(),
+               rulesForPerson(),
+               rulesForSoftwareApplication(),
+               rulesForTVEpisode(),
+               rulesForTVSeason(), 
+               rulesForTVSeries(),
+               rulesForWebPage());
+
+
       function fixSchemaId(str) {
         // Converts for example:
         // "<http://schema.orgactor>" to "actor".
@@ -70,7 +92,6 @@ function Rule(type, date1, label, reference, date2) {
         return isDateAttribute(id) || (typeof value != "undefined");
       }
       
-      // var type = getRealType(this.model); 
       var type = this.model.get ('@type');
       
       var attributes = type.attributes.list();
@@ -142,7 +163,6 @@ function Rule(type, date1, label, reference, date2) {
             
             );
           } else {
-            //new
             if (!contains(value,"@")) {
               value = value.getSubject();
               input.attr("value", value);
@@ -159,6 +179,7 @@ function Rule(type, date1, label, reference, date2) {
       return this;
     }
   });
+
 
 
   function collectSuperTypes(type) {
@@ -300,3 +321,445 @@ function Rule(type, date1, label, reference, date2) {
 
 
 })(jQuery);
+
+function rulesForCreativeWork() {
+  var type = "<http://schema.org/CreativeWork>";
+  return [
+    new Rule(type, "schema:datePublished", ">=", "self", "schema:dateCreated"),
+    new Rule(type, "schema:dateModified", ">=", "self", "schema:dateCreated"),
+    new Rule(type, "schema:copyrightYear", ">=", "self", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:accountablePerson", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:associatedMedia", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:associatedMedia", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:associatedMedia", "schema:uploadDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:audioObject", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:audioObject", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:audioObject", "schema:uploadDate"),
+    
+    //author can be Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:author", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:author", "schema:foundingDate"),
+        
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:comment", "schema:startDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:comment", "schema:commentTime"),
+    
+    
+    //contributor can Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:contributor", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:contributor", "schema:deathDate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:contributor", "schema:foundingDate"),
+    
+    
+    //copyrightHolder can Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:copyrightHolder", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:copyrightHolder", "schema:deathDate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:copyrightHolder", "schema:foundingDate"),
+    
+    
+    //creator can Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:creator", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:creator", "schema:deathDate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:creator", "schema:foundingDate"),
+    
+        
+    //editor can be only Person
+    new Rule(type, "schema:dateCreated", ">=", "schema:editor", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:editor", "schema:deathDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:encoding", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:encoding", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:encoding", "schema:uploadDate"),
+    //new Rule(type, "schema:dateCreated", "<=", "schema:encodings", "schema:dateCreated"),
+    
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:offers", "schema:priceValidUntil"),
+ 
+    
+    //provider can Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:provider", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:provider", "schema:deathDate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:provider", "schema:foundingDate"),
+    
+    //publisher can be only Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:publisher", "schema:foundingDate"),
+    
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:review", "schema:dateCreated"),
+    //new Rule(type, "schema:dateCreated", "<=", "schema:reviews", "schema:dateCreated"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:sourceOrganization", "schema:foundingDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:videoObject", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:videoObject", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:videoObject", "schema:uploadDate")
+       
+  ];
+  
+  /*
+    Subtypes:
+    Article
+    Blog
+    Book
+    Comment
+    Diet
+    ExercisePlan
+    ItemList
+    Map
+    MediaObject - extra: expires, uploadDate
+    Movie
+    MusicPlaylist
+    MusicRecording
+    Painting
+    Photograph
+    Recipe
+    Review
+    Sculpture
+    SoftwareApplication
+    TVEpisode
+    TVSeason
+    TVSeries
+    WebPage
+    WebPageElement
+*/
+}
+
+function rulesForEducationalOrganization() {
+  var type = "<http://schema.org/EducationalOrganization>";
+  return [
+    new Rule(type, "schema:foundingDate", "<=", "schema:alumni", "schema:birthDate"),
+  ];
+  /*
+  Subtypes do not contain extra date-related properties
+  */
+}
+
+
+function rulesForEvent() {
+  var type = "<http://schema.org/Event>";
+  return [
+    new Rule(type, "schema:startDate", "<=", "self", "schema:endDate"), 
+    new Rule(type, "schema:startDate", ">=", "schema:attendee", "schema:birthDate"),
+    //new Rule(type, "schema:startDate", ">=", "schema:attendees", "schema:birthDate"), 
+    new Rule(type, "schema:startDate", ">=", "schema:performer", "schema:birthDate"),
+    //new Rule(type, "schema:startDate", ">=", "schema:performers", "schema:birthDate"),
+    new Rule(type, "schema:startDate", "<=", "schema:subEvent", "schema:startDate"),
+    new Rule(type, "schema:endDate", ">=", "schema:subEvent", "schema:endDate")
+    //new Rule(type, "schema:startDate", "<=", "schema:subEvents", "schema:startDate"),
+    //new Rule(type, "schema:endDate", ">=", "schema:subEvents", "schema:endDate"),
+    ];
+}
+
+/*
+Subtypes do not contain other date-properties
+
+Subtypes:
+BusinessEvent
+ChildrensEvent
+ComedyEvent
+DanceEvent
+EducationEvent
+Festival
+FoodEvent
+LiteraryEvent
+MusicEvent
+SaleEvent
+SocialEvent
+SportsEvent
+TheaterEvent
+UserInteraction
+VisualArtsEvent
+
+*/
+
+
+function rulesForJobPosting() {
+  var type = "<http://schema.org/JobPosting>";
+  return [
+    new Rule(type, "schema:datePoste", ">=", "schema:hiringOrganization", "schema:foundingDate")
+   ];
+   /*
+   There are no subtypes
+   */
+}
+
+
+function rulesForMediaObject() {
+  var type = "<http://schema.org/MediaObject>";
+  return [
+    new Rule(type, "schema:dateCreated", "<=", "self", "schema:uploadDate"),
+    new Rule(type, "schema:dateCreated", "<=", "self", "schema:expires"),
+    
+    new Rule(type, "schema:dateModified", "<=", "self", "schema:uploadDate"),
+    new Rule(type, "schema:dateMOdified", "<=", "self", "schema:expires"),
+    
+    new Rule(type, "schema:datePublished", "<=", "self", "schema:uploadDate"),
+    new Rule(type, "schema:datePublished", "<=", "self", "schema:expires"),
+    
+    
+    new Rule(type, "schema:uploadDate", "<=", "associatedArticle", "schema:dateCreated"),
+    new Rule(type, "schema:uploadDate", "<=", "associatedArticle", "schema:dateModified"),
+    new Rule(type, "schema:uploadDate", "<=", "associatedArticle", "schema:datePublished"),
+    
+    
+    new Rule(type, "schema:dateCreated", ">=", "encodesCreativeWork", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", ">=", "encodesCreativeWork", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", ">=", "encodesCreativeWork", "schema:datePublished")
+    
+  ];
+}
+
+
+function rulesForMovie() {
+  var type = "<http://schema.org/Movie>";
+  return [
+    new Rule(type, "schema:datePublished", ">=", "self", "schema:dateCreated"),
+    new Rule(type, "schema:dateModified", ">=", "self", "schema:dateCreated"),
+    new Rule(type, "schema:copyrightYear", ">=", "self", "schema:dateCreated"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:director", "schema:birthDate"),    
+    new Rule(type, "schema:dateCreated", "<=", "schema:director", "schema:deathDate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:actor", "schema:birthDate"),
+    //new Rule(type, "schema:dateCreated", ">=", "schema:actors", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:actor", "schema:deathDate"),
+    
+    //musicBy can be Person or MusicGroup
+    new Rule(type, "schema:dateCreated", ">=", "schema:musicBy", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:musicBy", "schema:foundingDate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:producer", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:producer", "schema:deathDate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:productionCompany", "schema:foundingDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailor", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailor", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailor", "schema:datePublished"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailor", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailor", "schema:uploadDate")
+    
+
+  ];
+}
+
+
+function rulesForMusicPlaylist() {
+  var type = "<http://schema.org/MusicPlaylist>";
+  return [
+    new Rule(type, "schema:dateCreated", ">=", "schema:track", "schema:dateCreated"),
+    //new Rule(type, "schema:dateCreated", ">=", "schema:tracks", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:track", "schema:datePublished")
+  ];
+}
+
+
+function rulesForOffer() {
+  var type = "<http://schema.org/Offer>";
+  return [
+    new Rule(type, "schema:priceValidUntil", ">=", "schema:seller", "schema:foundingDate")
+   
+  ];
+}
+
+
+function rulesForOrganization() {
+  var type = "<http://schema.org/Organization>";
+  return [
+    new Rule(type, "schema:foundingDate", ">=", "schema:employee", "schema:birthDate"),
+    //new Rule(type, "schema:foundingDate", ">=", "schema:employees", "schema:birthDate"),
+    
+    new Rule(type, "schema:foundingDate", "<=", "schema:employee", "schema:deathDate"),
+    //new Rule(type, "schema:foundingDate", "<=", "schema:employees", "schema:deathDate"),
+    
+    // founder is only of type Person
+    new Rule(type, "schema:foundingDate", ">=", "schema:founder", "schema:birthDate"),
+    //new Rule(type, "schema:foundingDate", ">=", "schema:founders", "schema:birthDate"),
+    
+    new Rule(type, "schema:foundingDate", "<=", "schema:founder", "schema:deaththDate"),
+    //new Rule(type, "schema:foundingDate", "<=", "schema:founders", "schema:deaththDate"),
+    
+    //member is of type Person or Organization
+    new Rule(type, "schema:foundingDate", ">=", "schema:member", "schema:birthDate"),
+    //new Rule(type, "schema:foundingDate", ">=", "schema:members", "schema:birthDate"),
+    
+    new Rule(type, "schema:foundingDate", "<=", "schema:member", "schema:deathDate"),
+    //new Rule(type, "schema:foundingDate", "<=", "schema:member", "schema:deathDate"),
+    
+    new Rule(type, "schema:foundingDate", "<=", "schema:review", "schema:dateCreated"),
+    new Rule(type, "schema:foundingDate", "<=", "schema:review", "schema:dateModified"),
+    new Rule(type, "schema:foundingDate", "<=", "schema:review", "schema:datePublished")
+    // plural case: reviews
+   
+  ];
+  
+  /*
+  Subtypes: Corportation, NGO, GovernmentOrganization, SportsTeam do not contain other date-related properties.
+  
+  Subtype: EducationalOrganization contatins date-related propety "Alumni" of type Person. 
+  Subtypes of EducationalOrganization do not contain other date-related propeties.
+  
+  Subtype: LocalBusiness contains date-realted property "branchOf" of type Organization.
+  TODO: check subtypes of LocalBusiness
+  
+  TODO: check subtype of PerformingGroup
+  */  
+}
+
+
+
+function rulesForPerson() {
+  var type = "<http://schema.org/Person>";
+  return [
+    new Rule(type, "schema:birthDate", "<=", "self", "schema:deathDate"),
+    new Rule(type, "schema:deathDate", ">=", "schema:affiliation", "schema:foundingDate"),
+    new Rule(type, "schema:birthDate", ">=", "schema:alumniOf", "schema:foundingDate"),
+    new Rule(type, "schema:birthDate", "<=", "schema:children", "schema:birthDate"),
+    new Rule(type, "schema:deathDate", ">=", "schema:colleague", "schema:birthDate"),
+    //new Rule(type, "schema:deathDate", ">=", "schema:colleagues", "schema:birthDate"),
+    new Rule(type, "schema:deathDate", ">=", "schema:follows", "schema:birthDate"),
+    new Rule(type, "schema:deathDate", ">=", "schema:knows", "schema:birthDate"),
+    new Rule(type, "schema:deathDate", ">=", "schema:memberOf", "schema:foundingDate"),
+    new Rule(type, "schema:birthDate", ">=", "schema:parent", "schema:birthDate"),
+    //new Rule(type, "schema:birthDate", ">=", "schema:parents", "schema:birthDate"),
+    new Rule(type, "schema:birthDate", "<=", "schema:performerIn", "schema:startDate"),
+    new Rule(type, "schema:deathDate", ">=", "schema:spouse", "schema:birthDate"),
+    new Rule(type, "schema:birthDate", ">=", "schema:worksFor", "schema:foundingDate")     
+  
+  ];
+   /*
+    There are no subtypes for Person
+    */
+}
+
+
+function rulesForSoftwareApplication() {
+  var type = "<http://schema.org/SoftwareApplication>";
+  return [
+    new Rule(type, "schema:dateCreated", "<=", "schema:screenshot", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:screenshot", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:screenshot", "schema:datePublished"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:screenshot", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:screenshot", "schema:uploadDate")
+        
+  ];
+}
+
+
+function rulesForTVEpisode() {
+  var type = "<http://schema.org/TVEpisode>";
+  return [
+    new Rule(type, "schema:dateCreated", ">=", "schema:actor", "schema:birthDate"),
+    //new Rule(type, "schema:dateCreated", ">=", "schema:actors", "schema:birthDate"),    
+    new Rule(type, "schema:dateCreated", "<=", "schema:actor", "schema:deathDate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:director", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:director", "schema:deathDate"),
+    
+    //musicBy can be Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:musicBy", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:musicBy", "schema:deathDate"),
+    //new Rule(type, "schema:dateCreated", ">=", "schema:musicBy", "schema:foundingDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfSeason", "schema:startDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfSeason", "schema:endDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfSeason", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfSeason", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfSeason", "schema:datePublished"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfTVSeries", "schema:startDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfTVSeries", "schema:endDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfTVSeries", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfTVSeries", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:partOfTVSeries", "schema:datePublished"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:producer", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:producer", "schema:deathDate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:productionCompany", "schema:foundingDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:datePublished"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:uploadDate")
+  
+        
+  ];
+}
+
+
+function rulesForTVSeason() {
+  var type = "<http://schema.org/TVSeason>";
+  return [
+    new Rule(type, "schema:startDate", "<=", "self", "schema:endDate"),
+    
+    new Rule(type, "schema:startDate", ">=", "schema:trailer", "schema:dateCreated"),
+    new Rule(type, "schema:startDate", ">=", "schema:trailer", "schema:dateModified"),
+    new Rule(type, "schema:startDate", ">=", "schema:trailer", "schema:datePublished"),
+    new Rule(type, "schema:startDate", ">=", "schema:trailer", "schema:expires"),
+    new Rule(type, "schema:startDate", ">=", "schema:trailer", "schema:uploadDate")  
+        
+  ];
+}
+
+
+function rulesForTVSeries() {
+  var type = "<http://schema.org/TVSeries>";
+  return [
+    new Rule(type, "schema:startDate", "<=", "self", "schema:endDate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:actor", "schema:birthdate"),
+    //new Rule(type, "schema:dateCreated", ">=", "schema:actors", "schema:birthdate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:actor", "schema:deathdate"),
+    
+    new Rule(type, "schema:dateCreated", ">=", "schema:director", "schema:birthdate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:director", "schema:deathdate"),
+    
+    //musicBy can be Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:musicBy", "schema:birthDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:musicBy", "schema:deathDate"),
+    //new Rule(type, "schema:dateCreated", ">=", "schema:musicBy", "schema:foundingDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:season", "schema:startDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:season", "schema:endDate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:season", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:season", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:season", "schema:datePublished"),
+    //new Rule(type, "schema:dateCreated", "<=", "schema:seasons", "schema:startDate"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:datePublished"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:trailer", "schema:uploadDate")
+    ];
+}
+
+
+function rulesForWebPage() {
+  var type = "<http://schema.org/WebPage>";
+  return [
+        
+    new Rule(type, "schema:dateCreated", "<=", "self", "schema:lastReviewed"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:mainContentOfPage", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:mainContentOfPage", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:mainContentOfPage", "schema:datePublished"),
+    
+    new Rule(type, "schema:dateCreated", "<=", "schema:primaryImageOfPage", "schema:dateCreated"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:primaryImageOfPage", "schema:dateModified"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:primaryImageOfPage", "schema:datePublished"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:primaryImageOfPage", "schema:expires"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:primaryImageOfPage", "schema:uploadDate"),
+    
+    //reviewedBy can be Person or Organization
+    new Rule(type, "schema:dateCreated", ">=", "schema:reviewedBy", "schema:birthdate"),
+    new Rule(type, "schema:dateCreated", "<=", "schema:reviewedBy", "schema:deathdate"),
+    new Rule(type, "schema:dateCreated", ">=", "schema:reviewedBy", "schema:foundingDate")
+    ];
+}
+
+
+
