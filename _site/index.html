@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html version="XHTML+RDFa 1.0" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:schema="http://schema.org/" xmlns:demo="http://iks.demo.eu/">
+
+	<head>
+        <title>Date annotation</title>
+        <!-- jQuery  -->
+        <script type="text/javascript" src="libs/jquery-1.6.1.js"></script>
+        <script type="text/javascript" src="libs/jquery-ui-1.8.16.js"></script>
+
+        <!-- scripts required for VIE   -->
+        <script type="text/javascript" src="libs/underscore-1.3.1.js"></script>   
+        <script type="text/javascript" src="libs/backbone-0.9.0.js"></script>
+        <script type="text/javascript" src="https://raw.github.com/neogermi/VIE/master/lib/rdfquery/latest/jquery.rdfquery.debug.js"></script>
+    
+        <!-- VIE -->
+        <script type="text/javascript" src="libs/vie-2.0.0_20120402151811.debug.js"></script>        
+
+        <!-- scripts required for Kalendae -->
+        <script type="text/javascript" src="libs/kalendae.js" charset="utf-8"></script>
+        <link rel="stylesheet" type="text/css" href="css/kalendae.css" charset="utf-8"/>
+        
+    
+	    	<!-- Demo specific code -->
+       <script type="text/javascript" src="js/vie.widget.date-time-picker.js"></script>
+       <link rel="stylesheet" type="text/css" href="css/demo.css" charset="utf-8"/>
+
+       <script type="text/javascript" src="js/demo.js"></script>
+
+       <!-- Backbone templates -->
+       <script type="text/template" id="movie-template">
+            <h1> <%= name %>  </h1>
+            <p> <%= datePublished %> </p>
+            all for now.
+       </script>
+
+  </head>
+    <body>
+        <div id="content">
+            <div class="article">
+                <div>
+                <h1 class="title"> VIE Widget - DateTimePicker</h1><br>
+         
+                  <span about="http://live.dbpedia.org/page/Avatar_(2009_film)" typeof="schema:Movie">
+                     <span property="schema:datePublished" content="2009-12-10"> <span property="schema:genre" content="science fiction"><span property="schema:name">Avatar</span></span></span> is a science fiction film directed by
+                        <span rel="schema:director">
+                          <span about="http://live.dbpedia.org/page/James_Cameron" typeof="schema:Person">
+                            <span property="schema:birthDate" content="1954-08-16"><span property="schema:name">James Cameron</span></span>, a Canadian film director and film producer. Cameron was born in Kapuskasing, Ontario on August 16, 1954 and is famous for his previous works, such as "The Terminator"(1984), "Aliens"(1986), "True Lies"(1994) and "Titanic"(1997). 
+                 
+                            To launch a promotion campaign for Avatar, Cameron appeared at
+                            <span rel="schema:performerIn">
+                              <span typeof="schema:Event" about="http://live.dbpedia.org/page/San_Diego_Comic-Con_International">
+                                <span property="schema:name">San Diego Comic-Con International</span>, a four-day convention that was held from 
+                                <span property="schema:startDate" content="2009-07-23">July 23th, 2009</span> to 
+                                <span property="schema:endDate" content="2009-07-27">July 27th, 2009</span>.
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                        On December 10, 2009 the film premiered in London. It received positive critical reviews worldwide and quickly became the highest-grossing film of all time. The film's production company was
+                        <span rel="schema:productionCompany">
+                          <span typeof="schema:Organization" about="http://dbpedia.openlinksw.com:8890/page/Category:Lightstorm_Entertainment_films"><span property="schema:name">Lightstorm Entertainment</span>.
+                          </span>
+                        </span>
+                  </span>
+                                 
+                </div>  
+           </div>
+           <div style="text-align:center;margin-top:20px;" class="tellmemore">
+             <h3>Tutorial</h3>
+                Click <a style="color:#31e;" href="explain.html">here</a> for the tutorial.
+           </div> 
+        </div>
+        <div id="entity-cards"></div>
+    </body>
+</html>
