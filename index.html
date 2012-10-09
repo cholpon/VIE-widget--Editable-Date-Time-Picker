@@ -23,21 +23,6 @@
     
 	    	<!-- Demo specific code -->
        <script type="text/javascript" src="js/vie.widget.date-time-picker.js"></script>
-    	 <script type="text/javascript" src="js/rules/creativeWork.js"></script>
-    	 <script type="text/javascript" src="js/rules/educationalOrganization.js"></script>
-    	 <script type="text/javascript" src="js/rules/event.js"></script>
-    	 <script type="text/javascript" src="js/rules/jobPosting.js"></script>
-    	 <script type="text/javascript" src="js/rules/mediaObject.js"></script>
-    	 <script type="text/javascript" src="js/rules/movie.js"></script>
-    	 <script type="text/javascript" src="js/rules/musicPlaylist.js"></script>
-    	 <script type="text/javascript" src="js/rules/offer.js"></script>
-    	 <script type="text/javascript" src="js/rules/organization.js"></script>
-    	 <script type="text/javascript" src="js/rules/person.js"></script>
-    	 <script type="text/javascript" src="js/rules/softwareApplication.js"></script>
-    	 <script type="text/javascript" src="js/rules/TVEpisode.js"></script>
-    	 <script type="text/javascript" src="js/rules/TVSeason.js"></script>
-    	 <script type="text/javascript" src="js/rules/TVSeries.js"></script>
-    	 <script type="text/javascript" src="js/rules/webPage.js"></script>
        <link rel="stylesheet" type="text/css" href="css/demo.css" charset="utf-8"/>
 
        <script type="text/javascript" src="js/demo.js"></script>
@@ -53,36 +38,32 @@
     <body>
         <div id="content">
             <div class="article">
-                <div typeof="schema:Movie">
+                <div>
                 <h1 class="title"> VIE Widget - DateTimePicker</h1><br>
-                <p>
-                  <span property="schema:name">Avatar</span> is a <span property="schema:genre">science fiction
-                  </span> film directed by 
-                  <span rel="schema:director"> 
-                  <span typeof="schema:Person" about="http://my-namespace/James_Cameron">
-                  <span property="schema:name">James Cameron</span>, a Canadian film director and film producer. Cameron was born in Kapuskasing, Ontario on
-                  <span property="schema:birthDate" content="1954-08-16">August 16, 1954</span> and is famous for his previous works, such as "The Terminator"(1984), "Aliens"(1986), "True Lies"(1994) and "Titanic"(1997).
-                </p>
-                
-                <p>
-                  To launch a promotion campaign for Avatar, Cameron appeared at 
-                  <span rel="schema:performerIn">
-                  <span typeof="schema:Event" about="http://my-namespace/San_Diego_Comic-Con">
-                  <span property="schema:name">San Diego Comic-Con</span>
-                  , a four-day convention that was held from 
-                  <span property="schema:startDate" content="2009-07-23">July 23th, 2009</span> to 
-                  <span property="schema:endDate" content="2009-07-27">July 27th, 2009</span>
+         
+                  <span about="http://live.dbpedia.org/page/Avatar_(2009_film)" typeof="schema:Movie">
+                     <span property="schema:datePublished" content="2009-12-10"> <span property="schema:genre" content="science fiction"><span property="schema:name">Avatar</span></span></span> is a science fiction film directed by
+                        <span rel="schema:director">
+                          <span about="http://live.dbpedia.org/page/James_Cameron" typeof="schema:Person">
+                            <span property="schema:birthDate" content="1954-08-16"><span property="schema:name">James Cameron</span></span>, a Canadian film director and film producer. Cameron was born in Kapuskasing, Ontario on August 16, 1954 and is famous for his previous works, such as "The Terminator"(1984), "Aliens"(1986), "True Lies"(1994) and "Titanic"(1997). 
+                 
+                            To launch a promotion campaign for Avatar, Cameron appeared at
+                            <span rel="schema:performerIn">
+                              <span typeof="schema:Event" about="http://live.dbpedia.org/page/San_Diego_Comic-Con_International">
+                                <span property="schema:name">San Diego Comic-Con International</span>, a four-day convention that was held from 
+                                <span property="schema:startDate" content="2009-07-23">July 23th, 2009</span> to 
+                                <span property="schema:endDate" content="2009-07-27">July 27th, 2009</span>.
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                        On December 10, 2009 the film premiered in London. It received positive critical reviews worldwide and quickly became the highest-grossing film of all time. The film's production company was
+                        <span rel="schema:productionCompany">
+                          <span typeof="schema:Organization" about="http://dbpedia.openlinksw.com:8890/page/Category:Lightstorm_Entertainment_films"><span property="schema:name">Lightstorm Entertainment</span>.
+                          </span>
+                        </span>
                   </span>
-                  </span>.
-                  </span>
-                  </span>
-                  On <span property="schema:datePublished" content="2009-12-10">December 10, 2009</span> the film premiered in London. It received positive critical reviews worldwide and quickly became the highest-grossing film of all time.
-                  The film's production company was 
-                  <span rel="schema:productionCompany">
-                  <span typeof="schema:Organization" about="http://my-namespace/Lightstorm_Entertainment"> <span property="schema:name">Lightstorm Entertainment</span>.
-                  </span>
-                  </span>
-                </p>
+                                 
                 </div>  
            </div>
            <div style="text-align:center;margin-top:20px;" class="tellmemore">
