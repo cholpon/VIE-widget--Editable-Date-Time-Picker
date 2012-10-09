@@ -106,19 +106,17 @@ var Kalendae = function (targetElement, options) {
 			else util.addClassName($cal, classes.monthMiddle);
 		}
 		
-		var message = options.message();
 		//title bar
 		//new
 		$message0 = util.make('div', {'class':classes.title}, $cal);
 		$message0.innerHTML = "Recommended date range";
 		$message0.setAttribute('class','message');
 		$message1 = util.make('div', {'class':classes.title}, $cal);
-		$message1.innerHTML = message[0];
+		$message1.innerHTML = options.message[0];
 		$message1.setAttribute('class','message');
 		$message2 = util.make('div', {'class':classes.title}, $cal);
-		$message2.innerHTML = message[1];
+		$message2.innerHTML = options.message[1];
 		$message2.setAttribute('class','message');
-		
 		//end new
 		$title = util.make('div', {'class':classes.title}, $cal);
 		util.make('a', {'class':classes.previousYear}, $title);	//previous button
@@ -146,8 +144,6 @@ var Kalendae = function (targetElement, options) {
 		//store each calendar view for easy redrawing
 		calendars.push({
 			caption:$caption,
-			message1: $message1,
-			message2: $message2,
 			days:dayNodes
 		});
 		
@@ -434,12 +430,9 @@ Kalendae.prototype = {
 			day = moment(month).date(1);
 			day.day( day.day() < this.settings.weekStart ? this.settings.weekStart-7 : this.settings.weekStart); 
 			//if the first day of the month is less than our week start, back up a week
-            
-            var message = opts.message();
+
 			cal = this.calendars[i];
 			cal.caption.innerHTML = month.format(this.settings.titleFormat);
-			cal.message1.innerHTML = message[0];
-			cal.message2.innerHTML = message[1];
 			j = 0;
 			do {
 				$span = cal.days[j];

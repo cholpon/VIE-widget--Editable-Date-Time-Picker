@@ -2,21 +2,6 @@
 // (c) 2012 Cholpon Degenbaeva
 // VIE Widgets may be freely distributed under the MIT license.
 // (see LICENSE)
-var allRules = ([]).concat(rulesForCreativeWork(),
-               rulesForEducationalOrganization(),
-               rulesForEvent(),
-               rulesForJobPosting(),
-               rulesForMediaObject(),
-               rulesForMovie(),
-               rulesForMusicPlaylist(),
-               rulesForOffer(),
-               rulesForOrganization(),
-               rulesForPerson(),
-               rulesForSoftwareApplication(),
-               rulesForTVEpisode(),
-               rulesForTVSeason(), 
-               rulesForTVSeries(),
-               rulesForWebPage());
 
 function Rule(type, date1, label, reference, date2) {
   this.type = type;
@@ -25,6 +10,7 @@ function Rule(type, date1, label, reference, date2) {
   this.reference = reference;
   this.date2 = date2;
 }
+
 
 (function($, undefined) {
   // Date Picker Widget starts.
@@ -49,7 +35,7 @@ function Rule(type, date1, label, reference, date2) {
       });
     },
     
-    _init: function () {
+    _init:   function () {
     },
 
     options: {
@@ -65,7 +51,22 @@ function Rule(type, date1, label, reference, date2) {
     },
 
     render: function () {
-       
+        var allRules = ([]).concat(rulesForCreativeWork(),
+               rulesForEducationalOrganization(),
+               rulesForEvent(),
+               rulesForJobPosting(),
+               rulesForMediaObject(),
+               rulesForMovie(),
+               rulesForMusicPlaylist(),
+               rulesForOffer(),
+               rulesForOrganization(),
+               rulesForPerson(),
+               rulesForSoftwareApplication(),
+               rulesForTVEpisode(),
+               rulesForTVSeason(), 
+               rulesForTVSeries(),
+               rulesForWebPage());
+
 
       function fixSchemaId(str) {
         // Converts for example:
